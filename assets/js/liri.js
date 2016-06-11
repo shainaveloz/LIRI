@@ -2,16 +2,44 @@ var keys = require('./keys.js');
 var twitter = require('twitter');
 var tweets = new twitter(keys.twitterKeys);
 
-var params = {screen_name: 'shay2420'};
+var search = process.argv[2];
+var value = process.argv[3];
+
+
+// Twitter params
+var params = {screen_name: 'Shay2420'};
 tweets.get('statuses/user_timeline', params, function(error, tweets, response){
   if (!error) {
     console.log(tweets);
   }
 });
 
+// Spotify
+var spotify = require('spotify');
 
+function getThisSong(value){
+	
+    if (value){
+    	var song = value;
+    }
+    else{
+    	var song = "Hey Joe";
+    }
+    spotify.search({ type: 'I Want It That Way', query: song }, function(err, data) {
+	    if ( err ) {
+	        console.log('Error occurred: ' + err);
+	        return;
+	    }
+	    else{
+    		console.log(data.tracks.items[0].artists[0].name);
+		    console.log(data.tracks.items[0].name);
+		    console.log(data.tracks.items[0].preview_url);
+		    console.log(data.tracks.items[0].album.name);
+	    }
+	})  
 
-var search = process.argv[2];
+}
+
 
 
 // request npm package 
@@ -28,3 +56,8 @@ request('http://www.omdbapi.com/?t=Mr.Nobody&y=&plot=short&r=json', function (er
 		console.log("The movie's is: " + JSON.parse(body)["Title"])
 	}
 });
+
+
+function run(search, value){
+
+}
